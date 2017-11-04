@@ -1,4 +1,6 @@
 import numpy as np
+from functools import reduce
+from operator import mul
 
 class Node:
     def __init__(self, children = [], value = None, topdiff = 0):
@@ -23,7 +25,7 @@ class Node:
 class AddNode(Node):
     def forward(self):
         super().forward()
-        self.value = self.children[0].value + self.children[1].value
+        self.value = sum(child.value for child in self.children)
 
     def backward(self):
         for c in children:
@@ -34,7 +36,8 @@ class AddNode(Node):
 class MulNode(Node):
     def forward(self):
         super().forward()
-        self.value = self.children[0].value * self.children[1].value
+        # This is the product equivalent of sum(list)
+        self.value = reduce(mul, (child.value for child in self.children))
 
     def backward(self):
         self.children[0].accumulate_gradient(self.children[1].value *
