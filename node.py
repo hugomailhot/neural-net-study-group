@@ -7,7 +7,8 @@ class Node:
         self.topdiff = topdiff
 
     def forward(self):
-        pass
+        for child in self.children:
+            child.forward()
 
     def backward(self):
         pass
@@ -15,6 +16,7 @@ class Node:
 
 class AddNode(Node):
     def forward(self):
+        super().forward()
         self.value = self.children[0].value + self.children[1].value
 
     def backward(self):
@@ -23,6 +25,7 @@ class AddNode(Node):
 
 class MulNode(Node):
     def forward(self):
+        super().forward()
         self.value = self.children[0].value * self.children[1].value
 
     def backward(self):
@@ -31,6 +34,7 @@ class MulNode(Node):
 
 class ExpNode(Node):
     def forward(self):
+        super().forward()
         self.value = np.exp(self.children[0].value)
 
     def backward(self):
