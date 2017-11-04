@@ -11,8 +11,11 @@ class Node:
             child.forward()
 
     def backward(self):
-        pass
+        for child in self.children:
+            child.backward()
 
+    def accumulate_gradient(self, gradient):
+        self.topdiff += gradient
 
 class AddNode(Node):
     def forward(self):
@@ -22,6 +25,7 @@ class AddNode(Node):
     def backward(self):
         for c in children:
             c.topdiff = self.topdiff
+        super().backward()
 
 class MulNode(Node):
     def forward(self):
@@ -31,6 +35,7 @@ class MulNode(Node):
     def backward(self):
         self.children[0].topdiff = self.children[1].value * self.topdiff
         self.children[1].topdiff = self.children[0].value * self.topdiff
+        super().backward()
 
 class ExpNode(Node):
     def forward(self):
@@ -39,3 +44,4 @@ class ExpNode(Node):
 
     def backward(self):
         self.children[0].topdiff = np.exp(self.children[0].value)
+        super().backward()
