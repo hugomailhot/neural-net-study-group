@@ -1,9 +1,10 @@
 import numpy as np
 
 class Node:
-    children = []
-    value = None
-    topdiff = None
+    def __init__(self, children = [], value = None, topdiff = 0):
+        self.children = children
+        self.value = value
+        self.topdiff = topdiff
 
     def forward(self):
         pass
