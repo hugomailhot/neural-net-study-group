@@ -21,6 +21,17 @@ class Node:
     def accumulate_gradient(self, gradient):
         self.topdiff += gradient
 
+class ConstantNode(Node):
+    def __init__(self, value = None, topdiff = 0):
+        self.children = []
+        self.value = value
+        self.topdiff = topdiff
+
+class ParameterNode(Node):
+    def __init__(self, value = None, topdiff = 0):
+        self.children = []
+        self.value = value
+        self.topdiff = topdiff
 
 class AddNode(Node):
     def forward(self):
