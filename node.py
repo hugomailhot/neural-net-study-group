@@ -58,8 +58,8 @@ class MulNode(Node):
         super().backward()
 
 
-class ExpNode(Node):
-    def forward(self):
+class ExpNode(Node): 
+    def forward(self) :
         super().forward()
         self.value = np.exp(self.children[0].value)
 
@@ -68,10 +68,16 @@ class ExpNode(Node):
         super().backward()
 
 class SquaredLossNode(Node):
+    def __init__(self, pred, true):
+        super().__init__(children=[pred, true])
+
     def forward(self):
         super().forward()
-        self.value = (self.children[0] - self.children[1])**2
+        self.value = (self.predicted - self.true)**2
 
     def backward(self):
-        self.children[0].accumulate_gradient()         
+        pred = self.children[0]
+        true = self.children[1]
+        self.children[0].accumulate_gradient(2 * (pred - true) * self.topdiff)
+        self.children[1].accumulate_gradient(-2 * (pred - true) * self.topdiff)
         super().backward()
