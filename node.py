@@ -55,3 +55,12 @@ class ExpNode(Node):
     def backward(self):
         self.children[0].accumulate_gradient(np.exp(self.children[0].value))
         super().backward()
+
+class SquaredLossNode(Node):
+    def forward(self):
+        super().forward()
+        self.value = (self.children[0] - self.children[1])**2
+
+    def backward(self):
+        self.children[0].accumulate_gradient()         
+        super().backward()
