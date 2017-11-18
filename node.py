@@ -9,12 +9,23 @@ class Node:
         self.topdiff = topdiff
 
     def forward(self):
+        """Forward propagation of the node values.
+
+        We reset topdiff to prepare for accumulation in the backward pass.
+        This just implements the recursive call to all children. Each
+        subclass of Node must implement its own forward pass logic.
+        """
         # Reset topdiff, preparing for accumulation in the backward pass
         self.topdiff = 0
         for child in self.children:
             child.forward()
 
     def backward(self):
+        """Backward propagation of the upstream derivatives.
+
+        This just implements the recursive call to all children. Each
+        subclass of Node must implement its own backward pass logic.
+        """
         for child in self.children:
             child.backward()
 
@@ -51,7 +62,6 @@ class AddNode(Node):
             c.accumulate_gradient(self.topdiff)
         super().backward()
 
-
 class MulNode(Node):
     """Multiplication Node
 
@@ -69,7 +79,6 @@ class MulNode(Node):
                                              self.topdiff)
         super().backward()
 
-
 class ExpNode(Node):
     """Exponential Function Node
 
@@ -86,6 +95,9 @@ class ExpNode(Node):
 
 
 class SquaredLossNode(Node):
+    """
+    
+    """
     def __init__(self, pred, true):
         super().__init__(children=[pred, true])
 
