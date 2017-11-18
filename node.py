@@ -23,15 +23,11 @@ class Node:
 
 class ConstantNode(Node):
     def __init__(self, value = None, topdiff = 0):
-        self.children = []
-        self.value = value
-        self.topdiff = topdiff
+        super().__init__([], value, topdiff)
 
 class ParameterNode(Node):
     def __init__(self, value = None, topdiff = 0):
-        self.children = []
-        self.value = value
-        self.topdiff = topdiff
+        super().__init__([], value, topdiff)
 
 class AddNode(Node):
     def forward(self):
