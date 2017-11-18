@@ -22,14 +22,26 @@ class Node:
         self.topdiff += gradient
 
 class ConstantNode(Node):
+    """Constant Node
+
+    This node represents a constant input to the model.
+    """
     def __init__(self, value = None, topdiff = 0):
         super().__init__([], value, topdiff)
 
 class ParameterNode(Node):
+    """Parameter Node
+
+    This node represents a parameter in the model.
+    """
     def __init__(self, value = None, topdiff = 0):
         super().__init__([], value, topdiff)
 
 class AddNode(Node):
+    """Addition Node
+
+    This node adds its inputs.
+    """
     def forward(self):
         super().forward()
         self.value = sum(child.value for child in self.children)
@@ -41,6 +53,10 @@ class AddNode(Node):
 
 
 class MulNode(Node):
+    """Multiplication Node
+
+    This node multiplies its two inputs.
+    """
     def forward(self):
         super().forward()
         # This is the product equivalent of sum(list)
@@ -54,14 +70,20 @@ class MulNode(Node):
         super().backward()
 
 
-class ExpNode(Node): 
-    def forward(self) :
+class ExpNode(Node):
+    """Exponential Function Node
+
+    This node computes the exponential function with the node's input as the
+    exponent.
+    """
+    def forward(self):
         super().forward()
         self.value = np.exp(self.children[0].value)
 
     def backward(self):
         self.children[0].accumulate_gradient(np.exp(self.children[0].value))
         super().backward()
+
 
 class SquaredLossNode(Node):
     def __init__(self, pred, true):
